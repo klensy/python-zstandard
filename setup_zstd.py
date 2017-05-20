@@ -4,7 +4,6 @@
 # This software may be modified and distributed under the terms
 # of the BSD license. See the LICENSE file for details.
 
-import os
 from distutils.extension import Extension
 
 
@@ -86,23 +85,22 @@ zstd_depends = [
 
 def get_c_extension(support_legacy=False, system_zstd=False, name='zstd'):
     """Obtain a distutils.extension.Extension for the C extension."""
-    root = os.path.abspath(os.path.dirname(__file__))
 
-    sources = set([os.path.join(root, p) for p in ext_sources])
+    sources = set(ext_sources)
     if not system_zstd:
-        sources.update([os.path.join(root, p) for p in zstd_sources])
+        sources.update(zstd_sources)
         if support_legacy:
-            sources.update([os.path.join(root, p) for p in zstd_sources_legacy])
+            sources.update(zstd_sources_legacy)
     sources = list(sources)
 
-    include_dirs = set([os.path.join(root, d) for d in ext_includes])
+    include_dirs = set(ext_includes)
     if not system_zstd:
-        include_dirs.update([os.path.join(root, d) for d in zstd_includes])
+        include_dirs.update(zstd_includes)
         if support_legacy:
-            include_dirs.update([os.path.join(root, d) for d in zstd_includes_legacy])
+            include_dirs.update(zstd_includes_legacy)
     include_dirs = list(include_dirs)
 
-    depends = [os.path.join(root, p) for p in zstd_depends]
+    depends = zstd_depends
 
     extra_args = ['-DZSTD_MULTITHREAD']
 
